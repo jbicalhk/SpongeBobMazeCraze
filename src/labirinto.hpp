@@ -34,9 +34,39 @@ public:
            return m_maze[y * m_width + x];
        }
 
+   void desenharQuadrados(sf::RenderWindow& window, const Maze& maze, float tamanhoQuadrado)
+   {
+       // Defina uma cor /vou mudar para sprite
+       sf::Color cor(255, 0, 0);
+
+       // Percorra as células do labirinto
+       for (unsigned int y = 0; y < maze.m_height; ++y)
+       {
+           for (unsigned int x = 0; x < maze.m_width; ++x)
+           {
+               // Verifique o valor da célula no labirinto
+               if (!maze.GetCellValue(x, y))
+               {
+                   // Calcule as coordenadas x e y para o quadrado
+                   float posX = static_cast<float>(x) * tamanhoQuadrado;
+                   float posY = static_cast<float>(y) * tamanhoQuadrado;
+
+                   // Crie um objeto de quadrado com base nas coordenadas e tamanho
+                   sf::RectangleShape quadrado(sf::Vector2f(tamanhoQuadrado, tamanhoQuadrado));
+                   quadrado.setPosition(posX, posY);
+                   quadrado.setFillColor(cor);
+
+                   // Desenhe o quadrado na janela
+                   window.draw(quadrado);
+               }
+           }
+       }
+   }
+
+
 private:
 
-   // Display the maze.
+   /*Display the maze.
    std::ostream &Show(std::ostream &os) const
    {
       for(unsigned y = 0; y < m_height; y++) {
@@ -46,7 +76,7 @@ private:
          os << "\n";
       }
       return os;
-   }
+   }*/
 
    // Initialize the maze array.
    void Initialize()
@@ -93,8 +123,8 @@ private:
 
 
 
-// Maze insertion operator.
+/* Maze insertion operator.
 std::ostream &operator<<(std::ostream &os, const Maze &maze)
 {
    return maze.Show(os);
-}
+}*/
