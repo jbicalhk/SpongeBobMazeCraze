@@ -34,15 +34,25 @@ public:
            return m_maze[y * m_width + x];
        }
 
-   void desenharQuadrados(sf::RenderWindow& window, const Maze& maze, float tamanhoQuadrado)
+   void desenharQuadrados(sf::RenderWindow& window, const Maze& maze)
    {
-       // Defina uma cor /vou mudar para sprite
+       // Obtenha o tamanho do labirinto
+       unsigned int larguraLabirinto = maze.m_width;
+       unsigned int alturaLabirinto = maze.m_height;
+
+       // Calcule o tamanho proporcional do quadrado
+       float tamanhoQuadrado = std::min(
+           static_cast<float>(window.getSize().x) / larguraLabirinto,
+           static_cast<float>(window.getSize().y) / alturaLabirinto
+       );
+
+       // Defina uma cor para os quadrados (por exemplo, vermelho)
        sf::Color cor(255, 0, 0);
 
        // Percorra as células do labirinto
-       for (unsigned int y = 0; y < maze.m_height; ++y)
+       for (unsigned int y = 0; y < alturaLabirinto; ++y)
        {
-           for (unsigned int x = 0; x < maze.m_width; ++x)
+           for (unsigned int x = 0; x < larguraLabirinto; ++x)
            {
                // Verifique o valor da célula no labirinto
                if (!maze.GetCellValue(x, y))
@@ -120,7 +130,6 @@ private:
 
 
 };
-
 
 
 /* Maze insertion operator.
