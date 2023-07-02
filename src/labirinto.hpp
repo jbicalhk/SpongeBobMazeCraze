@@ -46,7 +46,7 @@ public:
            static_cast<float>(window.getSize().y) / alturaLabirinto
        );
 
-       // Defina uma cor para os quadrados (por exemplo, vermelho)
+       // Defina uma cor mudar para sprite
        sf::Color cor(255, 0, 0);
 
        // Percorra as células do labirinto
@@ -64,7 +64,7 @@ public:
                    // Crie um objeto de quadrado com base nas coordenadas e tamanho
                    sf::RectangleShape quadrado(sf::Vector2f(tamanhoQuadrado, tamanhoQuadrado));
                    quadrado.setPosition(posX, posY);
-                   quadrado.setFillColor(cor);
+                   quadrado.setFillColor(cor);//mudar para sprite
 
                    // Desenhe o quadrado na janela
                    window.draw(quadrado);
@@ -72,7 +72,15 @@ public:
            }
        }
    }
+   unsigned int GetWidth() const
+       {
+           return m_width;
+       }
 
+       unsigned int GetHeight() const
+       {
+           return m_height;
+       }
 
 private:
 
