@@ -81,7 +81,6 @@ public:
        {
            return m_height;
        }
-
 private:
 
    /*Display the maze.
@@ -135,7 +134,6 @@ private:
    std::vector<bool> m_maze;
 
    friend std::ostream &operator<<(std::ostream &os, const Maze &maze);
-
 
 };
 
