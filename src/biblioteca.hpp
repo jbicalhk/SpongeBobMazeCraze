@@ -9,7 +9,7 @@
 #include <SFML/System.hpp>
 #include <iostream>
 
-int tamLab = 2;
+int tamLab = 3;
 
 class Player {
 public:
@@ -64,37 +64,14 @@ public:
 		return m_y;
 	}
 
-	/*void PrintCurrentCell() {
+	void PrintCurrentCell() {
 		int x = static_cast<int>(m_x);
 		int y = static_cast<int>(m_y);
 
 		std::cout << "O player está na célula (" << x << ", " << y << ")"
 				<< std::endl;
-	}*/
-
-	void SetPosition(unsigned int x, unsigned int y) {
-		m_x = x;
-		m_y = y;
 	}
 
-	/*void CheckExitCell(Player &player, const Maze &maze,
-			sf::RenderWindow &window, sf::RenderWindow &window2) {
-		unsigned int exitX = maze.GetWidth() - 3;
-		unsigned int exitY = maze.GetHeight() - 2;
-
-		if (player.GetX() == exitX && player.GetY() == exitY) {
-			window.clear();
-			window.display();
-
-			window2.clear();
-			Maze newMaze(39/4, 39/4); // Substitua NEW_WIDTH e NEW_HEIGHT pelas novas dimensões desejadas
-			newMaze.Generate();
-			newMaze.desenharQuadrados(window2, newMaze);
-			window2.display();
-
-			player.SetPosition(2, 1); // Movendo o jogador de volta para (2, 1)
-		}
-	}*/
 
 private:
 	unsigned int m_x;
@@ -171,11 +148,62 @@ public:
 		window.draw(enemySprite);
 	}
 
+	float GetX() const {
+			return m_x;
+		}
+
+		float GetY() const {
+			return m_y;
+		}
+
 private:
 	unsigned int m_x;
 	unsigned int m_y;
 	const Maze &m_maze;
 };
+
+void MovePlayer(const sf::Event& event, Player& player, bool& isMoving) {
+    if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Up) {
+            player.Move(0, -1);
+        } else if (event.key.code == sf::Keyboard::Down) {
+            player.Move(0, 1);
+        } else if (event.key.code == sf::Keyboard::Left) {
+            player.Move(-1, 0);
+        } else if (event.key.code == sf::Keyboard::Right) {
+            player.Move(1, 0);
+        }
+        sf::sleep(sf::milliseconds(115));
+    } else if (event.type == sf::Event::KeyReleased) {
+
+        if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Down ||
+            event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right) {
+            isMoving = false;
+
+        }
+    }
+}
+
+	bool CheckCollision(const Player &player, const Inimigo & inimigo){
+	float playerX = player.GetX();
+	float playerY = player.GetY();
+	float inimigoX = inimigo.GetX();
+	float inimigoY = inimigo.GetY();
+
+		if(playerX == inimigoX && playerY == inimigoY){
+			return true;
+		}
+		return false;
+	}
+
+	bool playerNaSaida(const Player &player, unsigned int saidaX, unsigned int saidaY){
+		if (player.GetX() == saidaX && player.GetY() == saidaY) {
+		    return true;
+		} else {
+		   return false;
+		}
+
+	}
 
 void labirinto() {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -187,22 +215,30 @@ void labirinto() {
 	m.Generate();
 	Player player(2, 1, m);
 	Inimigo enemy(20/tamLab, 20/ tamLab, m);
+	bool isMoving = false;
+
 
 	sf::Texture playerTexture;
-	if (!playerTexture.loadFromFile("assets/bobEsponja1.png")) {
+	if (!playerTexture.loadFromFile("assets/bobEsponja.png")) {
 		std::cout << "nao abre";
 	}
 	sf::Texture enemyTexture;
-	if (!enemyTexture.loadFromFile("assets/plankton1.png")) {
+	if (!enemyTexture.loadFromFile("assets/enemy1.png")) {
 		std::cout << "nao abre";
 	}
 
-	// Create the SFML window
+	sf::Texture background;
+	if (!background.loadFromFile("assets/background2.png")) {
+		std::cout << "nao abre";
+	}
+	sf::Sprite backgroundSprite(background);
+
+
 	sf::RenderWindow window(sf::VideoMode(800, 800), "Sponge Bob SquarePants MazeCraze");
 
 	float cellSize = std::min(static_cast<float>(window.getSize().x) / 800,
 	static_cast<float>(window.getSize().y) / 800);
-	bool isMoving = false;
+
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -211,42 +247,36 @@ void labirinto() {
 				window.close();
 		}
 
-
 		if (event.type == sf::Event::KeyPressed) {
-			// Verifica qual tecla foi pressionada
-			if (event.key.code == sf::Keyboard::Up) {
-				isMoving = true;
-				player.Move(0, -1); // Movimento para cima
-			} else if (event.key.code == sf::Keyboard::Down) {
-				isMoving = true;
-				player.Move(0, 1); // Movimento para baixo
-			} else if (event.key.code == sf::Keyboard::Left) {
-				isMoving = true;
-				player.Move(-1, 0); // Movimento para a esquerda
-			} else if (event.key.code == sf::Keyboard::Right) {
-				isMoving = true;
-				player.Move(1, 0); // Movimento para a direita
-			}
-
-
-		} else if (event.type == sf::Event::KeyReleased) {
-			// Verifica qual tecla foi liberada
-			if (event.key.code == sf::Keyboard::Up
-					|| event.key.code == sf::Keyboard::Down
-					|| event.key.code == sf::Keyboard::Left
-					|| event.key.code == sf::Keyboard::Right) {
-				isMoving = false; // Parar o movimento
-			}
+			MovePlayer(event, player, isMoving);
 		}
-		if (isMoving) {
-			// Atraso entre os movimentos (por exemplo, 200 milissegundos)
-			sf::sleep(sf::milliseconds(115));
+
+		enemy.MoveRandomly();// move randomicamente o inimigo enemy
+
+		if(CheckCollision(player, enemy)){
+		std::cout << "bateu";
 		}
+
+		unsigned int saidaX = m.GetWidth() - 3;
+		unsigned int saidaY = m.GetHeight() - 2;
+
+		if(playerNaSaida(player, saidaX, saidaY)){
+			std::cout <<"oi";
+		}
+
 		//player.PrintCurrentCell();
-		enemy.MoveRandomly();
+		//std::cout << "A célula de saída está na posição (" << saidaX << ", " << saidaY << ")" << std::endl;
+
+
+		backgroundSprite.setPosition(0, 0);
+		backgroundSprite.setScale(
+		static_cast<float>(window.getSize().x) / background.getSize().x,
+		static_cast<float>(window.getSize().y) / background.getSize().y);
 
 		window.clear();
+		window.draw(backgroundSprite);
 		m.desenharQuadrados(window, m);
+
 
 		float cellSize = std::min(
 		static_cast<float>(window.getSize().x) / width,

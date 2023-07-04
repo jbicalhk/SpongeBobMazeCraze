@@ -46,8 +46,17 @@ public:
            static_cast<float>(window.getSize().y) / alturaLabirinto
        );
 
-       // Defina uma cor mudar para sprite
-       sf::Color cor(255, 0, 0);
+       // Carregue a textura do bloco
+       sf::Texture blocoTextura;
+       if (!blocoTextura.loadFromFile("assets/bloco.png"))
+       {
+           std::cout << "Falha ao carregar a textura do bloco" << std::endl;
+           return;
+       }
+
+       // Crie um sprite para o bloco com base na textura
+       sf::Sprite blocoSprite(blocoTextura);
+       blocoSprite.setScale(tamanhoQuadrado / blocoSprite.getLocalBounds().width, tamanhoQuadrado / blocoSprite.getLocalBounds().height);
 
        // Percorra as células do labirinto
        for (unsigned int y = 0; y < alturaLabirinto; ++y)
@@ -61,17 +70,16 @@ public:
                    float posX = static_cast<float>(x) * tamanhoQuadrado;
                    float posY = static_cast<float>(y) * tamanhoQuadrado;
 
-                   // Crie um objeto de quadrado com base nas coordenadas e tamanho
-                   sf::RectangleShape quadrado(sf::Vector2f(tamanhoQuadrado, tamanhoQuadrado));
-                   quadrado.setPosition(posX, posY);
-                   quadrado.setFillColor(cor);//mudar para sprite
+                   // Configure a posição do sprite
+                   blocoSprite.setPosition(posX, posY);
 
-                   // Desenhe o quadrado na janela
-                   window.draw(quadrado);
+                   // Desenhe o sprite na janela
+                   window.draw(blocoSprite);
                }
            }
        }
    }
+
    unsigned int GetWidth() const
        {
            return m_width;
