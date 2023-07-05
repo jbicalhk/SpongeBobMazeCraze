@@ -242,10 +242,30 @@ bool playerNaSaida(const Player &player, const Player &player2,
 
 void labirinto() {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
-	int tamLab = 5;
-	bool isEnemyVisible = false;
 
-	sf::RenderWindow window(sf::VideoMode(960, 800),
+	int tamLab = 5;
+
+
+	bool isEnemyVisible = false;
+	int vida1= 100, vida2= 100;
+
+	std::vector<sf::Texture> textures1;
+	std::vector<sf::Texture> textures2;
+
+	for (int i = 1; i <= 10; i++)
+	    {
+	        sf::Texture textureGreen;
+	        std::string texturePath1 = "assets/hudGreen/barraVerde_" + std::to_string(i) + ".png"; // Supondo que as texturas tenham nomes como "barra_0.png", "barra_1.png", etc.
+
+	        if (!textureGreen.loadFromFile(texturePath1))
+	        {
+	           std::cout <<"nao abre";
+	        }
+
+	        textures1.push_back(textureGreen);
+	    }
+
+	sf::RenderWindow window(sf::VideoMode(1400, 800),
 			"Sponge Bob SquarePants MazeCraze");
 	sf::Texture playerTexture;
 	if (!playerTexture.loadFromFile("assets/bobEsponja.png")) {
@@ -258,7 +278,7 @@ void labirinto() {
 		return;
 	}
 	sf::Texture enemyTexture;
-	if (!enemyTexture.loadFromFile("assets/enemy1.png")) {
+	if (!enemyTexture.loadFromFile("assets/serigueijo.png")) {
 		std::cout << "nao abre" << std::endl;
 		return;
 	}
@@ -267,6 +287,12 @@ void labirinto() {
 		std::cout << "nao abre" << std::endl;
 		return;
 	}
+	sf::Texture enemyTexture2;
+		if (!enemyTexture2.loadFromFile("assets/enemy.png")) {
+		std::cout << "nao abre" << std::endl;
+		return;
+		}
+
 	sf::Sprite backgroundSprite(background);
 
 	while (window.isOpen()) {
@@ -275,9 +301,10 @@ void labirinto() {
 		Player player(2, 1, m);
 		Player player2(2, 1, m);
 		bool isMoving = false;
-		if (tamLab <= 3) {
+
+
+		if (tamLab <= 3 && tamLab >=2) {
 			Inimigo enemy(20 / tamLab, 20 / tamLab, m);
-			// Resto do código do loop principal
 
 			float cellSize = std::min(
 					static_cast<float>(window.getSize().x) / 800,
@@ -294,15 +321,18 @@ void labirinto() {
 					MovePlayer2(event, player2, isMoving);
 				}
 
-				if (tamLab <= 3) {
+				if (tamLab <= 3 && tamLab >=2) {
 					isEnemyVisible = true;
 				} else {
 					isEnemyVisible = false;
 				}
 
-				if (CheckCollision(player, enemy)
-						|| CheckCollision(player2, enemy)) {
-					std::cout << "bateu" << std::endl;
+				if (CheckCollision(player, enemy)){
+					vida1 -= 5;
+				}
+
+				if(CheckCollision(player2, enemy)) {
+					vida2 -=5;
 				}
 
 				unsigned int saidaX = m.GetWidth() - 3;
@@ -337,7 +367,10 @@ void labirinto() {
 
 				window.display();
 			}
-		} else {
+		} else if (tamLab == 1){
+			Inimigo enemy(20 / tamLab, 20 / tamLab, m);
+			Inimigo enemy2(30 / tamLab, 30 / tamLab, m);
+
 			float cellSize = std::min(
 					static_cast<float>(window.getSize().x) / 800,
 					static_cast<float>(window.getSize().y) / 800);
@@ -353,10 +386,25 @@ void labirinto() {
 					MovePlayer2(event, player2, isMoving);
 				}
 
-				if (tamLab <= 3) {
+				if (tamLab == 1) {
 					isEnemyVisible = true;
 				} else {
 					isEnemyVisible = false;
+				}
+
+				if (CheckCollision(player, enemy)) {
+					vida1 -= 5;
+				}
+
+				if (CheckCollision(player2, enemy)) {
+					vida2 -= 5;
+				}
+				if (CheckCollision(player, enemy2)) {
+					vida1 -= 5;
+				}
+
+				if (CheckCollision(player2, enemy2)) {
+					vida2 -= 5;
 				}
 
 				unsigned int saidaX = m.GetWidth() - 3;
@@ -385,6 +433,56 @@ void labirinto() {
 				player.Draw(window, m, cellSize, playerTexture);
 				player2.Draw(window, m, cellSize, playerTexture2);
 
+				//if (isEnemyVisible) {
+					enemy.MoveRandomly(tamLab);
+					enemy2.MoveRandomly(tamLab);
+					enemy.Draw(window, m, cellSize, enemyTexture);
+					enemy2.Draw(window, m, cellSize, enemyTexture2);
+					//}
+
+				window.display();
+			}
+		} else {
+			float cellSize = std::min(
+					static_cast<float>(window.getSize().x) / 800,
+					static_cast<float>(window.getSize().y) / 800);
+
+			while (true) {
+				sf::Event event;
+				while (window.pollEvent(event)) {
+					if (event.type == sf::Event::Closed) {
+						window.close();
+						return;
+					}
+					MovePlayer(event, player, isMoving);
+					MovePlayer2(event, player2, isMoving);
+				}
+
+				unsigned int saidaX = m.GetWidth() - 3;
+				unsigned int saidaY = m.GetHeight() - 2;
+
+				if (playerNaSaida(player, player2, saidaX, saidaY)) {
+					tamLab--;
+					break;
+				}
+
+				backgroundSprite.setPosition(0, 0);
+				backgroundSprite.setScale(
+						static_cast<float>(window.getSize().x)
+								/ background.getSize().x,
+						static_cast<float>(window.getSize().y)
+								/ background.getSize().y);
+
+				window.clear();
+				window.draw(backgroundSprite);
+				m.desenharQuadrados(window, m);
+
+				float cellSize = std::min(
+						static_cast<float>(window.getSize().x) / m.GetWidth(),
+						static_cast<float>(window.getSize().y) / m.GetHeight());
+
+				player.Draw(window, m, cellSize, playerTexture);
+				player2.Draw(window, m, cellSize, playerTexture2);
 				window.display();
 			}
 		}
