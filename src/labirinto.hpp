@@ -4,6 +4,7 @@
 #include <vector>
 #include <random>
 #include <SFML/Graphics.hpp>
+//#include "paginas.hpp"
 
 
 class Maze {
