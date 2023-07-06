@@ -1,0 +1,53 @@
+	            LINGUAGENS E TÉCNICAS DE PROGRAMAÇÃO: INFO-2 (T1)
+
+Grupo 01: 
+- Érika Liz Augusto Moreira
+- Fernanda Teixeira Camargos 
+- João Gabriel de Souza Bicalho
+
+Jogo: Maze Craze
+____________________________________________________________________________________________________________________________________________
+Informações sobre a compilação e execução do jogo:
+
+1° O projeto estará zipado, logo, é necessário que seja feito uma extração de todos os 
+arquivos dentro de uma pasta.
+
+2º Eclipse e SFML: A versão de C++ do codigo produzido é a C17.
+
+3º O jogo foi desenvolvido na versão 7.3.0 do gcc (MingW) e 2.5.1 SFML, portanto, ele so funciona nessas configurações.
+
+4º O código desenvolvido utiliza também as bibliotecas:
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+#include <algorithm>
+#include <vector>
+#include <random>
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <iostream>
+#include <chrono>
+
+5º Para a configuração do projeto:
+- Baixe o projeto do jogo, extraia-o e importe-o para o Ambiente de Desenvolvimento Integrado de  código "Eclipse". 
+- Em seguida selecione as propriedades do projeto através do eclipse.
+- Na janela de propriedades procure a opção C/C++ build e selecione a opção settings.
+- Selecione a opção "include" em "GCC C++ Compiler".
+- Clique no botão para adicionar uma biblioteca (+ em libraries) e verifique se o endereço em que você descompactou a biblioteca SFML e o caminho da
+pasta include são os mesmos do seu dispositivo. Se sim, siga para o próximo passo, caso contrário, copie o endereço correto e cole-o na IDE. 
+- Selecione MingW C++.
+- Verifique uma a uma as quatro bibliotecas necessárias para o funcionamento do game: sfml-graphics, sfml-audio, sfml-window e sfml-system
+(a ordem é importante) e também o caminho da pasta lib.
+- Aplique as mundaças e feche.
+- Aperte F5 para atualizar.
+- Utilize o botão de compilação e veja se uma pasta com o arquivo .exe(binário) foi criada.
+- Caso o binário não tenha sido criado, entre novamente em propriedades, C/C++ Build e finalmente em "Enviroment".
+- Verifique se o caminho da pasta descompactada do seu MingW está definido corretamente em seu dispositivo.
+- Verifique também se a pasta "Path" possui o caminho correto de seu computador, incluindo o caminho de SFML/bin.
+OU:
+- Abra o projeto no Windows Explorer.
+- Entre na basta debug onde você encontrará seu exe.
+- Vá na pasta onde você descompctou a biblioteca SFML e copie as bibliotecas que você configurou na parte do linker e cole junto ao seu exe.
+- Feito isso rode novamente.
+
+6º Execute o código como "Local C/C++ Application".

@@ -32,6 +32,8 @@ void menuRegras()
 	jogar.setFillColor(sf::Color::Black);
 	jogar.setPosition(683, 692);
 
+
+
 	while (regrasJogo.isOpen())
 	{
 	   sf::Event event;
@@ -40,6 +42,7 @@ void menuRegras()
 	      if (event.type == sf::Event::Closed)
 	         regrasJogo.close();
 	   }
+
 
 	   if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
 	   && jogar.getGlobalBounds().contains(event.mouseButton.x,event.mouseButton.y))
@@ -96,13 +99,18 @@ int main(int argc, char **argv) {
 	    sf::Sprite buttonImp(buttonMenuTex);
 	    buttonImp.setPosition(370* 1.458333f, 415*1.4814814);
 
-	    sf::SoundBuffer bolhaBuffer;
-	    sf::Sound bolhaSound;
-	    bolhaBuffer.loadFromFile("assets/somBolha.wav");
-	    float volume = 75.0f;
-	    bolhaSound.setVolume(volume);
+	sf::Music bolha;
+	if (!bolha.openFromFile("assets/somBolha.wav")) {
+		std::cout << "nao abre a musica";
+	}
 
-	    std::vector<sf::Texture> texturasPaginaInicial;
+	sf::Music music;
+	if (!music.openFromFile("assets/trilhaSonora.wav")) {
+		std::cout << "nao abre a musica";
+	}
+	music.setVolume(75.0f);
+
+	std::vector<sf::Texture> texturasPaginaInicial;
 	    std::vector<sf::Sprite> spritesPaginaInicial;
 	    std::vector<std::string> imagePathsPaginaInicial = { "assets/telaInicialBob1.png","assets/telaInicialBob2.png",
 	    "assets/telaInicialBob3.png","assets/telaInicialBob4.png","assets/telaInicialBob5.png"};
@@ -140,6 +148,8 @@ int main(int argc, char **argv) {
 	            if (event.type == sf::Event::Closed)
 	                paginaInicial.close();
 	        }
+	        music.setLoop(true);
+
 
 	        float deltaTime = tempo.restart().asSeconds();
 	        tempoPassado += deltaTime;
@@ -152,7 +162,8 @@ int main(int argc, char **argv) {
 	        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
 	        && play.getGlobalBounds().contains(event.mouseButton.x,event.mouseButton.y))
 	        {
-	        	bolhaSound.setBuffer(bolhaBuffer);
+	        	music.play();
+	        	bolha.play();
 	        	paginaInicial.clear();
 	        	labirinto(paginaInicial);
 	        	paginaInicial.display();
@@ -161,6 +172,7 @@ int main(int argc, char **argv) {
 	        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
 	        && rules.getGlobalBounds().contains(event.mouseButton.x,event.mouseButton.y))
 	        {
+	        	bolha.play();
 	        	paginaInicial.clear();
 	        	menuRegras();
 	        	paginaInicial.display();
@@ -169,8 +181,11 @@ int main(int argc, char **argv) {
 	        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
 	        && impossible.getGlobalBounds().contains(event.mouseButton.x,event.mouseButton.y))
 	        {
-	            paginaInicial.close();
-	            //faseImpossivel();
+	        	bolha.play();
+	        	music.play();
+	            paginaInicial.clear();
+	            labirintoImpossivel(paginaInicial);
+	            paginaInicial.display();
 	        }
 
 	        paginaInicial.clear();

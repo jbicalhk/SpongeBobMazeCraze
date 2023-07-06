@@ -11,6 +11,12 @@ void perdeu(sf::RenderWindow& window) {
     std::vector<std::string> imagePathsPerdeu;
     imagePathsPerdeu = {"assets/perdeu/casoPerca1.png", "assets/perdeu/casoPerca2.png", "assets/perdeu/casoPerca3.png"};
 
+    sf::Font fonte;
+    fonte.loadFromFile("assets/fonte.ttf");
+    	sf::Text perdeu("VOCE PERDEU!", fonte, 50);
+    	perdeu.setFillColor(sf::Color::White);
+    	perdeu.setPosition(520, 600);
+
     for (const auto& path : imagePathsPerdeu) {
         sf::Texture texture;
         if (!texture.loadFromFile(path)) {
@@ -58,6 +64,7 @@ void perdeu(sf::RenderWindow& window) {
 
         window.clear();
         window.draw(spritesPerdeu[frameAtual]);
+        window.draw(perdeu);
         window.display();
     }
 }
