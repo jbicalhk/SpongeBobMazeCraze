@@ -93,25 +93,25 @@ public:
 		int dx = 0;
 		int dy = 0;
 
-		// Escolher uma direção aleatória
+
 		int direction = rand() % 4;
 		switch (direction) {
-		case 0: // Cima
+		case 0:
 			dy = -1;
 			break;
-		case 1: // Baixo
+		case 1:
 			dy = 1;
 			break;
-		case 2: // Esquerda
+		case 2:
 			dx = -1;
 			break;
-		case 3: // Direita
+		case 3:
 			dx = 1;
 			break;
 			sf::sleep(sf::milliseconds(115));
 		}
 
-		// Calcular a nova posição
+
 		int newX = static_cast<int>(m_x) + dx;
 		int newY = static_cast<int>(m_y) + dy;
 
@@ -181,7 +181,7 @@ void MovePlayer(const sf::Event &event, Player &player, bool &isMoving) {
 		} else if (event.key.code == sf::Keyboard::Right) {
 			player.Move(1, 0);
 		}
-		// sf::sleep(sf::milliseconds(1));
+
 	} else if (event.type == sf::Event::KeyReleased) {
 
 		if (event.key.code == sf::Keyboard::Up
@@ -206,7 +206,7 @@ void MovePlayer2(const sf::Event &event, Player &player2, bool &isMoving) {
 			player2.Move(1, 0);
 		}
 
-		//  sf::sleep(sf::milliseconds(1));
+
 	} else if (event.type == sf::Event::KeyReleased) {
 		if (event.key.code == sf::Keyboard::W
 				|| event.key.code == sf::Keyboard::S
@@ -240,19 +240,21 @@ bool playerNaSaida(const Player &player, const Player &player2,
 
 }
 
-void telaFinal()
-{
+void telaFinal() {
 	sf::RenderWindow paginaFinal(sf::VideoMode(1400, 800), "Maze Craze");
 
 	sf::Image header;
 	header.loadFromFile("assets/logoJogo.png");
-	paginaFinal.setIcon(header.getSize().x, header.getSize().y, header.getPixelsPtr());
+	paginaFinal.setIcon(header.getSize().x, header.getSize().y,
+			header.getPixelsPtr());
 
 	sf::Texture bgFinalTex;
 	bgFinalTex.loadFromFile("assets/backgroudFinal.png");
 	sf::Sprite bgFinal(bgFinalTex);
-	float escalaX = paginaFinal.getSize().x / static_cast<float>(bgFinalTex.getSize().x);
-	float escalaY = paginaFinal.getSize().y / static_cast<float>(bgFinalTex.getSize().y);
+	float escalaX = paginaFinal.getSize().x
+			/ static_cast<float>(bgFinalTex.getSize().x);
+	float escalaY = paginaFinal.getSize().y
+			/ static_cast<float>(bgFinalTex.getSize().y);
 	bgFinal.setScale(escalaX, escalaY);
 
 	sf::Font fonte;
@@ -273,46 +275,47 @@ void telaFinal()
 	sair.setFillColor(sf::Color::White);
 	sair.setPosition(671, 387);
 
-	while (paginaFinal.isOpen())
-		{
-		   sf::Event event;
-		   while (paginaFinal.pollEvent(event))
-		   {
-		      if (event.type == sf::Event::Closed)
-		    	  paginaFinal.close();
-		   }
-
-		   if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
-		   && jogar.getGlobalBounds().contains(event.mouseButton.x,event.mouseButton.y))
-		   {
-			   paginaFinal.close();
-		      //labirinto();
-		   }
-
-		   if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
-		   && menu.getGlobalBounds().contains(event.mouseButton.x,event.mouseButton.y))
-		   {
-			   paginaFinal.close();
-		   	   //telaInicial();
-		   }
-
-		   if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left
-		   && sair.getGlobalBounds().contains(event.mouseButton.x,event.mouseButton.y))
-		   {
-			   paginaFinal.close();
-		   }
-
-		   paginaFinal.clear();
-		   paginaFinal.draw(bgFinal);
-		   paginaFinal.draw(titulo);
-		   paginaFinal.draw(jogar);
-		   paginaFinal.draw(menu);
-		   paginaFinal.draw(sair);
-		   paginaFinal.display();
+	while (paginaFinal.isOpen()) {
+		sf::Event event;
+		while (paginaFinal.pollEvent(event)) {
+			if (event.type == sf::Event::Closed)
+				paginaFinal.close();
 		}
+
+		if (event.type == sf::Event::MouseButtonPressed
+				&& event.mouseButton.button == sf::Mouse::Left
+				&& jogar.getGlobalBounds().contains(event.mouseButton.x,
+						event.mouseButton.y)) {
+			paginaFinal.close();
+
+		}
+
+		if (event.type == sf::Event::MouseButtonPressed
+				&& event.mouseButton.button == sf::Mouse::Left
+				&& menu.getGlobalBounds().contains(event.mouseButton.x,
+						event.mouseButton.y)) {
+			paginaFinal.close();
+
+		}
+
+		if (event.type == sf::Event::MouseButtonPressed
+				&& event.mouseButton.button == sf::Mouse::Left
+				&& sair.getGlobalBounds().contains(event.mouseButton.x,
+						event.mouseButton.y)) {
+			paginaFinal.close();
+		}
+
+		paginaFinal.clear();
+		paginaFinal.draw(bgFinal);
+		paginaFinal.draw(titulo);
+		paginaFinal.draw(jogar);
+		paginaFinal.draw(menu);
+		paginaFinal.draw(sair);
+		paginaFinal.display();
+	}
 }
 
-void labirintoImpossivel(sf::RenderWindow& window) {
+void labirintoImpossivel(sf::RenderWindow &window) {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	sf::Sprite tela;
 	sf::Sprite tela2;
@@ -320,38 +323,36 @@ void labirintoImpossivel(sf::RenderWindow& window) {
 
 	bool isEnemyVisible = false;
 
-	int vida1= 100, vida2= 100;
+	int vida1 = 100, vida2 = 100;
 
 	std::vector<sf::Texture> huGreen;
 	std::vector<sf::Texture> huRed;
 
-	for(int c =0; c < 10 ; c++){
+	for (int c = 0; c < 10; c++) {
 		sf::Texture texture;
-		texture.loadFromFile("assets/hudGreen/barraVerde_"+  std::to_string(c + 1)  +".png");
+		texture.loadFromFile(
+				"assets/hudGreen/barraVerde_" + std::to_string(c + 1) + ".png");
 		huGreen.push_back(texture);
 	}
 
-	for(int d =0; d < 10 ; d++){
-			sf::Texture texture2;
-			texture2.loadFromFile("assets/hudRed/barraVermelha_"+  std::to_string(d + 1)  +".png");
-			huRed.push_back(texture2);
-		}
+	for (int d = 0; d < 10; d++) {
+		sf::Texture texture2;
+		texture2.loadFromFile(
+				"assets/hudRed/barraVermelha_" + std::to_string(d + 1)
+						+ ".png");
+		huRed.push_back(texture2);
+	}
 
-	tela.setScale(0.1,0.1);
-	tela.setPosition(820, 2*150);
-	tela2.setScale(0.1,0.1);
+	tela.setScale(0.1, 0.1);
+	tela.setPosition(820, 2 * 150);
+	tela2.setScale(0.1, 0.1);
 	tela2.setPosition(820, 450);
 
-
-	//sf::RenderWindow window(sf::VideoMode(1400, 800),
-			//"Sponge Bob SquarePants MazeCraze");
-
 	sf::Image icon;
-	    if (!icon.loadFromFile("assets/logoJogo.png"))
-	    {
-	       std::cout <<"nao abre";
-	    }
-	    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+	if (!icon.loadFromFile("assets/logoJogo.png")) {
+		std::cout << "nao abre";
+	}
+	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
 	sf::Texture playerTexture;
 	if (!playerTexture.loadFromFile("assets/bobEsponja.png")) {
@@ -374,16 +375,16 @@ void labirintoImpossivel(sf::RenderWindow& window) {
 		return;
 	}
 	sf::Texture enemyTexture2;
-		if (!enemyTexture2.loadFromFile("assets/enemy.png")) {
+	if (!enemyTexture2.loadFromFile("assets/enemy.png")) {
 		std::cout << "nao abre" << std::endl;
 		return;
-		}
+	}
 
-		sf::Texture enemyTexture3;
-				if (!enemyTexture3.loadFromFile("assets/enemy1.png")) {
-				std::cout << "nao abre" << std::endl;
-				return;
-				}
+	sf::Texture enemyTexture3;
+	if (!enemyTexture3.loadFromFile("assets/enemy1.png")) {
+		std::cout << "nao abre" << std::endl;
+		return;
+	}
 
 	sf::Sprite backgroundSprite(background);
 
@@ -393,7 +394,6 @@ void labirintoImpossivel(sf::RenderWindow& window) {
 	sf::Sprite iconBob(textureIcon);
 	iconBob.setPosition(1180, 250);
 	iconBob.setScale(0.2f, 0.2f);
-
 
 	sf::Texture textureIcon2;
 	if (!textureIcon2.loadFromFile("assets/caraPatrick.png")) {
@@ -408,12 +408,11 @@ void labirintoImpossivel(sf::RenderWindow& window) {
 		Player player(2, 1, m);
 		Player player2(2, 1, m);
 		bool isMoving = false;
-		int textureIndex1 = (vida1 / 10) -1;
-		int textureIndex2 = (vida2 / 10) -1;
+		int textureIndex1 = (vida1 / 10) - 1;
+		int textureIndex2 = (vida2 / 10) - 1;
 
-		sf::Texture& currentTexture1 = huGreen.back();
-		sf::Texture& currentTexture2 = huRed.back();
-
+		sf::Texture &currentTexture1 = huGreen.back();
+		sf::Texture &currentTexture2 = huRed.back();
 
 		tela.setTexture(huGreen[textureIndex1]);
 		tela2.setTexture(huRed[textureIndex2]);
@@ -549,38 +548,37 @@ void labirintoImpossivel(sf::RenderWindow& window) {
 
 			player.Draw(window, m, cellSize, playerTexture);
 			player2.Draw(window, m, cellSize, playerTexture2);
-			//if (isEnemyVisible) {
+
 			enemy.MoveRandomly(tamLab);
 			enemy.Draw(window, m, cellSize, enemyTexture);
 			enemy2.MoveRandomly(tamLab);
 			enemy2.Draw(window, m, cellSize, enemyTexture2);
 			enemy3.MoveRandomly(tamLab);
 			enemy3.Draw(window, m, cellSize, enemyTexture3);
-			//}
-				window.draw(tela);
-				window.draw(tela2);
-				window.draw(iconBob);
-				window.draw(iconPatrick);
-				window.display();
-			}
 
+			window.draw(tela);
+			window.draw(tela2);
+			window.draw(iconBob);
+			window.draw(iconPatrick);
+			window.display();
+		}
 
-	if(textureIndex1 <= 0 || textureIndex2 <= 0){
-		window.clear();
-		perdeu(window);
-		window.display();
-	}if(vida1 > 0 && vida2 > 0 && tamLab <1){
-		window.close();
-		telaFinal();
-		window.display();
+		if (textureIndex1 <= 0 || textureIndex2 <= 0) {
+			window.clear();
+			perdeu(window);
+			window.display();
+		}
+		if (vida1 > 0 && vida2 > 0 && tamLab < 1) {
+			window.close();
+			telaFinal();
+			window.display();
 
-	}
+		}
 
 	}
 }
 
-
-void labirinto(sf::RenderWindow& window) {
+void labirinto(sf::RenderWindow &window) {
 	std::srand(static_cast<unsigned int>(std::time(nullptr)));
 	sf::Sprite tela;
 	sf::Sprite tela2;
@@ -588,38 +586,37 @@ void labirinto(sf::RenderWindow& window) {
 
 	bool isEnemyVisible = false;
 
-	int vida1= 100, vida2= 100;
+	int vida1 = 100, vida2 = 100;
 
 	std::vector<sf::Texture> huGreen;
 	std::vector<sf::Texture> huRed;
 
-	for(int c =0; c < 10 ; c++){
+	for (int c = 0; c < 10; c++) {
 		sf::Texture texture;
-		texture.loadFromFile("assets/hudGreen/barraVerde_"+  std::to_string(c + 1)  +".png");
+		texture.loadFromFile(
+				"assets/hudGreen/barraVerde_" + std::to_string(c + 1) + ".png");
 		huGreen.push_back(texture);
 	}
 
-	for(int d =0; d < 10 ; d++){
-			sf::Texture texture2;
-			texture2.loadFromFile("assets/hudRed/barraVermelha_"+  std::to_string(d + 1)  +".png");
-			huRed.push_back(texture2);
-		}
+	for (int d = 0; d < 10; d++) {
+		sf::Texture texture2;
+		texture2.loadFromFile(
+				"assets/hudRed/barraVermelha_" + std::to_string(d + 1)
+						+ ".png");
+		huRed.push_back(texture2);
+	}
 
-	tela.setScale(0.1,0.1);
-	tela.setPosition(820, 2*150);
-	tela2.setScale(0.1,0.1);
+	tela.setScale(0.1, 0.1);
+	tela.setPosition(820, 2 * 150);
+	tela2.setScale(0.1, 0.1);
 	tela2.setPosition(820, 450);
 
 
-	//sf::RenderWindow window(sf::VideoMode(1400, 800),
-			//"Sponge Bob SquarePants MazeCraze");
-
 	sf::Image icon;
-	    if (!icon.loadFromFile("assets/logoJogo.png"))
-	    {
-	       std::cout <<"nao abre";
-	    }
-	    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+	if (!icon.loadFromFile("assets/logoJogo.png")) {
+		std::cout << "nao abre";
+	}
+	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
 	sf::Texture playerTexture;
 	if (!playerTexture.loadFromFile("assets/bobEsponja.png")) {
@@ -642,10 +639,10 @@ void labirinto(sf::RenderWindow& window) {
 		return;
 	}
 	sf::Texture enemyTexture2;
-		if (!enemyTexture2.loadFromFile("assets/enemy.png")) {
+	if (!enemyTexture2.loadFromFile("assets/enemy.png")) {
 		std::cout << "nao abre" << std::endl;
 		return;
-		}
+	}
 
 	sf::Sprite backgroundSprite(background);
 
@@ -655,7 +652,6 @@ void labirinto(sf::RenderWindow& window) {
 	sf::Sprite iconBob(textureIcon);
 	iconBob.setPosition(1180, 250);
 	iconBob.setScale(0.2f, 0.2f);
-
 
 	sf::Texture textureIcon2;
 	if (!textureIcon2.loadFromFile("assets/caraPatrick.png")) {
@@ -670,20 +666,18 @@ void labirinto(sf::RenderWindow& window) {
 		Player player(2, 1, m);
 		Player player2(2, 1, m);
 		bool isMoving = false;
-		int textureIndex1 = (vida1 / 10) -1;
-		int textureIndex2 = (vida2 / 10) -1;
+		int textureIndex1 = (vida1 / 10) - 1;
+		int textureIndex2 = (vida2 / 10) - 1;
 
-		sf::Texture& currentTexture1 = huGreen.back();
-		sf::Texture& currentTexture2 = huRed.back();
-
+		sf::Texture &currentTexture1 = huGreen.back();
+		sf::Texture &currentTexture2 = huRed.back();
 
 		tela.setTexture(huGreen[textureIndex1]);
 		tela2.setTexture(huRed[textureIndex2]);
 
 		fflush(stdout);
-		if (tamLab <= 3 && tamLab >=2) {
+		if (tamLab <= 3 && tamLab >= 2) {
 			Inimigo enemy(20 / tamLab, 20 / tamLab, m);
-
 
 			float cellSize = std::min(
 					static_cast<float>(window.getSize().x) / 800,
@@ -700,41 +694,39 @@ void labirinto(sf::RenderWindow& window) {
 					MovePlayer2(event, player2, isMoving);
 				}
 
-				if (tamLab <= 3 && tamLab >=2) {
+				if (tamLab <= 3 && tamLab >= 2) {
 					isEnemyVisible = true;
 				} else {
 					isEnemyVisible = false;
 				}
 
-				if (CheckCollision(player, enemy)){
+				if (CheckCollision(player, enemy)) {
 					vida1 -= 10;
 					if (textureIndex1 > 0) {
-					        textureIndex1--;
-					        tela.setTexture(huGreen[textureIndex1]);
-					    }
-					if(textureIndex1 <= 0 || textureIndex2 <= 0){
-							window.clear();
-							perdeu(window);
-							window.display();
-						}
+						textureIndex1--;
+						tela.setTexture(huGreen[textureIndex1]);
+					}
+					if (textureIndex1 <= 0 || textureIndex2 <= 0) {
+						window.clear();
+						perdeu(window);
+						window.display();
+					}
 				}
 
-				if(CheckCollision(player2, enemy)) {
-					vida2 -=10;
+				if (CheckCollision(player2, enemy)) {
+					vida2 -= 10;
 					if (textureIndex2 > 0) {
-					        textureIndex2--;
-					        tela2.setTexture(huRed[textureIndex2]);
+						textureIndex2--;
+						tela2.setTexture(huRed[textureIndex2]);
 
-					    }
-					if(textureIndex1 <= 0 || textureIndex2 <= 0){
-							window.clear();
-							perdeu(window);
-							window.display();
-						}
+					}
+					if (textureIndex1 <= 0 || textureIndex2 <= 0) {
+						window.clear();
+						perdeu(window);
+						window.display();
+					}
 
 				}
-
-
 
 				unsigned int saidaX = m.GetWidth() - 3;
 				unsigned int saidaY = m.GetHeight() - 2;
@@ -761,17 +753,17 @@ void labirinto(sf::RenderWindow& window) {
 
 				player.Draw(window, m, cellSize, playerTexture);
 				player2.Draw(window, m, cellSize, playerTexture2);
-				//if (isEnemyVisible) {
-					enemy.MoveRandomly(tamLab);
-					enemy.Draw(window, m, cellSize, enemyTexture);
-				//}
+
+				enemy.MoveRandomly(tamLab);
+				enemy.Draw(window, m, cellSize, enemyTexture);
+
 				window.draw(tela);
 				window.draw(tela2);
 				window.draw(iconBob);
 				window.draw(iconPatrick);
 				window.display();
 			}
-		} else if (tamLab == 1){
+		} else if (tamLab == 1) {
 			Inimigo enemy(20 / tamLab, 20 / tamLab, m);
 			Inimigo enemy2(30 / tamLab, 30 / tamLab, m);
 
@@ -799,52 +791,52 @@ void labirinto(sf::RenderWindow& window) {
 				if (CheckCollision(player, enemy)) {
 					vida1 -= 10;
 					if (textureIndex1 > 0) {
-					        textureIndex1--;
-					        tela.setTexture(huGreen[textureIndex1]);
-					    }
-					if(textureIndex1 <= 0 || textureIndex2 <= 0){
-							window.clear();
-							perdeu(window);
-							window.display();
-						}
+						textureIndex1--;
+						tela.setTexture(huGreen[textureIndex1]);
+					}
+					if (textureIndex1 <= 0 || textureIndex2 <= 0) {
+						window.clear();
+						perdeu(window);
+						window.display();
+					}
 				}
 
 				if (CheckCollision(player2, enemy)) {
 					vida2 -= 10;
 					if (textureIndex2 > 0) {
-					        textureIndex2--;
-					        tela2.setTexture(huRed[textureIndex2]);
-					    }
-					if(textureIndex1 <= 0 || textureIndex2 <= 0){
-							window.clear();
-							perdeu(window);
-							window.display();
-						}
+						textureIndex2--;
+						tela2.setTexture(huRed[textureIndex2]);
+					}
+					if (textureIndex1 <= 0 || textureIndex2 <= 0) {
+						window.clear();
+						perdeu(window);
+						window.display();
+					}
 				}
 				if (CheckCollision(player, enemy2)) {
 					vida1 -= 10;
 					if (textureIndex1 > 0) {
-					        textureIndex1--;
-					        tela.setTexture(huGreen[textureIndex1]);
-					    }
-					if(textureIndex1 <= 0 || textureIndex2 <= 0){
-							window.clear();
-							perdeu(window);
-							window.display();
-						}
+						textureIndex1--;
+						tela.setTexture(huGreen[textureIndex1]);
+					}
+					if (textureIndex1 <= 0 || textureIndex2 <= 0) {
+						window.clear();
+						perdeu(window);
+						window.display();
+					}
 				}
 
 				if (CheckCollision(player2, enemy2)) {
 					vida2 -= 10;
 					if (textureIndex2 > 0) {
-					        textureIndex2--;
-					        tela2.setTexture(huRed[textureIndex2]);
-					    }
-					if(textureIndex1 <= 0 || textureIndex2 <= 0){
-							window.clear();
-							perdeu(window);
-							window.display();
-						}
+						textureIndex2--;
+						tela2.setTexture(huRed[textureIndex2]);
+					}
+					if (textureIndex1 <= 0 || textureIndex2 <= 0) {
+						window.clear();
+						perdeu(window);
+						window.display();
+					}
 				}
 
 				unsigned int saidaX = m.GetWidth() - 3;
@@ -873,19 +865,20 @@ void labirinto(sf::RenderWindow& window) {
 				player.Draw(window, m, cellSize, playerTexture);
 				player2.Draw(window, m, cellSize, playerTexture2);
 
-				//if (isEnemyVisible) {
-					enemy.MoveRandomly(tamLab);
-					enemy2.MoveRandomly(tamLab);
-					enemy.Draw(window, m, cellSize, enemyTexture);
-					enemy2.Draw(window, m, cellSize, enemyTexture2);
-					//}
-					window.draw(tela);
-					window.draw(tela2);
-					window.draw(iconBob);
-					window.draw(iconPatrick);
+
+				enemy.MoveRandomly(tamLab);
+				enemy2.MoveRandomly(tamLab);
+				enemy.Draw(window, m, cellSize, enemyTexture);
+				enemy2.Draw(window, m, cellSize, enemyTexture2);
+
+				window.draw(tela);
+				window.draw(tela2);
+				window.draw(iconBob);
+				window.draw(iconPatrick);
 				window.display();
 			}
-		} if(tamLab <= 5 && tamLab >=4){
+		}
+		if (tamLab <= 5 && tamLab >= 4) {
 
 			float cellSize = std::min(
 					static_cast<float>(window.getSize().x) / 800,
@@ -909,7 +902,6 @@ void labirinto(sf::RenderWindow& window) {
 					tamLab--;
 					break;
 				}
-
 
 				backgroundSprite.setPosition(0, 0);
 				backgroundSprite.setScale(
@@ -938,16 +930,17 @@ void labirinto(sf::RenderWindow& window) {
 
 		}
 
-	if(textureIndex1 <= 0 || textureIndex2 <= 0){
-		window.clear();
-		perdeu(window);
-		window.display();
-	}if(vida1 > 0 && vida2 > 0 && tamLab <1){
-		window.close();
-		telaFinal();
-		window.display();
+		if (textureIndex1 <= 0 || textureIndex2 <= 0) {
+			window.clear();
+			perdeu(window);
+			window.display();
+		}
+		if (vida1 > 0 && vida2 > 0 && tamLab < 1) {
+			window.close();
+			telaFinal();
+			window.display();
 
-	}
+		}
 
 	}
 }
